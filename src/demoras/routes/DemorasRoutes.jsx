@@ -5,12 +5,12 @@ import { InicioPage } from "../pages/InicioPage";
 
 export const DemorasRoutes = () => {
   return (
-    <PrivateRoute>
+    //<PrivateRoute>
       <Routes>
         <Route path="inicio" element={<InicioPage></InicioPage>} />
 
-        <Route path="/*" element={<Navigate to="/demoras/inicio" />} />
+        <Route path="/*" element={<Navigate to="/demoras/inicio" replace />} />
       </Routes>
-    </PrivateRoute>
+    //</PrivateRoute>
   );
 };
