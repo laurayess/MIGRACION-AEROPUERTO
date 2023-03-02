@@ -1,12 +1,9 @@
 import React, { useEffect } from "react";
 import { useDispatch } from "react-redux";
-import { getPokemons } from "../../store/slices/extensiones/thunks";
 
 export const InicioPage = () => {
   const dispatch = useDispatch();
-  useEffect(() => {
-    dispatch(getPokemons());
-  }, []);
+  useEffect(() => {}, []);
   return (
     <>
       <div>Inicio de Extensiones </div>
