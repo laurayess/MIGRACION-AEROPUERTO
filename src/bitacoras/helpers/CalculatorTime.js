@@ -1,37 +1,33 @@
-function horaToDecimal(hora) {
-  // Dividimos la hora, los minutos y los segundos en variables separadas
-  const [horaStr, minutoStr, segundoStr] = hora.split(":");
+export function horaToDecimal(hora) {
+  // Convertimos la hora a minutos
+  const minutos = hora
+    .split(":")
+    .reduce((total, valor) => 60 * total + +valor, 0);
 
-  // Convertimos cada parte en un número entero
-  const horaNum = parseInt(horaStr);
-  const minutoNum = parseInt(minutoStr);
-  const segundoNum = parseInt(segundoStr);
+  // Calculamos la hora en formato decimal
+  const horaDecimal = minutos / 60;
 
-  // Calculamos la hora decimal
-  const horaDecimal = horaNum + minutoNum / 60 + segundoNum / 3600;
-
-  // Devolvemos el resultado redondeado a 2 decimales
+  // Redondeamos el resultado a dos decimales y lo devolvemos
   return horaDecimal.toFixed(2);
 }
 
-function decimalToHora(horaDecimal) {
-  // Extraemos la hora y los minutos como números enteros
-  const horas = Math.floor(horaDecimal);
-  const minutos = Math.floor((horaDecimal - horas) * 60);
+export function decimalToHora(decimal) {
+  // Convertimos la hora decimal a minutos
+  const minutos = Math.floor(decimal * 60);
 
-  // Calculamos los segundos a partir de los minutos restantes
-  const segundos = Math.floor(((horaDecimal - horas) * 60 - minutos) * 60);
+  // Calculamos las horas y los minutos
+  const horas = Math.floor(minutos / 60);
+  const minutosRestantes = minutos % 60;
 
-  // Agregamos ceros por delante de las horas, minutos y segundos si son menores a 10
-  const horaStr = horas < 10 ? "0" + horas : horas.toString();
-  const minutoStr = minutos < 10 ? "0" + minutos : minutos.toString();
-  const segundoStr = segundos < 10 ? "0" + segundos : segundos.toString();
+  // Agregamos ceros por delante de las horas y los minutos si son menores a 10
+  const horaStr = horas.toString().padStart(2, "0");
+  const minutoStr = minutosRestantes.toString().padStart(2, "0");
 
-  // Unimos todo en una cadena con el formato "hh:mm:ss"
-  return horaStr + ":" + minutoStr + ":" + segundoStr;
+  // Unimos todo en una cadena con el formato "hh:mm"
+  return horaStr + ":" + minutoStr;
 }
 
-function sumarHoras(hora1, hora2) {
+/* export function sumarHoras(hora1, hora2) {
   // Convertimos ambas horas a segundos
   const hora1Segundos = hora1
     .split(":")
@@ -58,4 +54,27 @@ function sumarHoras(hora1, hora2) {
 
   // Unimos todo en una cadena con el formato "hh:mm:ss"
   return horaStr + ":" + minutoStr + ":" + segundoStr;
+} */
+
+export function sumarHoras(hora1, hora2) {
+  const [hora1h, hora1m] = hora1.split(":").map(Number);
+  const [hora2h, hora2m] = hora2.split(":").map(Number);
+
+  let horas = hora1h + hora2h;
+  let minutos = hora1m + hora2m;
+
+  if (minutos >= 60) {
+    minutos -= 60;
+    horas += 1;
+  }
+
+  // Opcionalmente, si quieres que las horas sean mayores a 24:
+  // while (horas >= 24) {
+  //   horas -= 24;
+  // }
+
+  const horasStr = horas.toString().padStart(2, "0");
+  const minutosStr = minutos.toString().padStart(2, "0");
+
+  return `${horasStr}:${minutosStr}`;
 }

@@ -6,7 +6,7 @@ export const InicioRoutes = () => {
   return (
     <Routes>
       <Route path="/" element={<EjemploPage />} />
-      <Route path="/*" element={<Navigate to="/" />} />
+      {/* <Route path="/*" element={<Navigate to="/" />} /> */}
     </Routes>
   );
 };

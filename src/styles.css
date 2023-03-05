@@ -1,0 +1,59 @@
+.my-header-class{
+    font-weight: bold;
+    background:rgb(95, 204, 210);
+    color: rgb(0, 0, 0);
+}
+
+.turm{
+    font-weight: bolder !important;
+    font-size: small;
+    
+    background:rgb(74, 74, 74);
+    color: rgb(255, 255, 255);
+}
+.total{
+    font-weight: bolder !important;
+    font-size: small;
+    
+    background:rgb(227, 227, 227);
+    color: rgb(0, 0, 0);
+}
+.info{
+   
+}
+
+.resultado{
+    font-weight: bold;
+    background:rgb(152, 181, 249);
+    color: rgb(0, 0, 0);
+}
+
+.inicio{
+    font-weight: bold;
+    background:rgb(0, 0, 0);
+    color: rgb(200, 200, 200);
+}
+  
+.prueba{
+    background-color: aqua;
+    width: "300px";
+    height: "300px";
+}
+
+::-webkit-scrollbar {
+    width: 16px;
+  }
+  
+  ::-webkit-scrollbar-track{
+    background: #f8f7f300;
+  }
+  
+  ::-webkit-scrollbar-thumb{
+    border: 3px solid #f8f7f3;
+    border-radius: 10px;
+    background: #303c89;
+  }
+  
+  ::-webkit-scrollbar-thumb:hover{
+    background: #105479;
+  }

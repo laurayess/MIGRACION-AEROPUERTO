@@ -1,5 +1,6 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { AuthRoutes } from "../auth/routes/AuthRoutes";
+import { BitacorasRoutes } from "../bitacoras/routes/BitacorasRoutes";
 import { DemorasRoutes } from "../demoras/routes/DemorasRoutes";
 import { ExtensionesRoutes } from "../extensiones/routes/ExtensionesRoutes";
 import { InicioRoutes } from "../inicio/routes/InicioRoutes";
@@ -20,6 +21,8 @@ export const AppRouter = () => {
         path="/demoras/*"
         element={<DemorasRoutes></DemorasRoutes>}
       ></Route>
+
+      <Route path="/bitacoras/*" element={<BitacorasRoutes />}></Route>
 
       {/* INTERNACIONES */}
 
