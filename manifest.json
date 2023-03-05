@@ -4,7 +4,7 @@
     "theme_color": "#000000",
     "background_color": "#000000",
     "display": "standalone",
-    "scope": "/",
+    "scope": "https://laurayess.github.io/MIGRACION-AEROPUERTO/#/",
     "start_url": "https://laurayess.github.io/MIGRACION-AEROPUERTO/#/",
     "icons": [
       {
