@@ -1,11 +1,43 @@
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { Navigate } from "react-router-dom";
-import { useLocation } from "react-router";
-
-export const PrivateRoute = ({ children }) => {
-  const logged = false;
+import { Route, Routes, useLocation, useRoutes } from "react-router";
+import { DemorasRoutes } from "../demoras/routes/DemorasRoutes";
+import DashboardLayout from "../inicio/layout/DashboardLayout";
+import { InicioRoutes } from "../inicio/routes/InicioRoutes";
+import { InternacionesRoutes } from "../internaciones/routes/InternacionesRoutes";
+import { ExtensionesRoutes } from "../extensiones/routes/ExtensionesRoutes";
+export const PrivateRoute = () => {
   const { pathname, search } = useLocation();
-  const lastpath = pathname + search;
-  localStorage.setItem("lastpath", lastpath);
-  return logged ? children : <Navigate to="/auth/login"></Navigate>;
+  const lastPath = pathname + search;
+  useEffect(() => {
+    localStorage.setItem("lastPath", lastPath);
+  }, [lastPath]);
+
+  /* let element = useRoutes([
+    {
+      path: "/",
+      element: <DashboardLayout />,
+      children: [
+        {
+          path: "/*",
+          element: <InicioRoutes />,
+        },
+        {
+          path: "/demoras/*",
+          element: <DemorasRoutes></DemorasRoutes>,
+        },
+      ],
+    },
+  ]); */
+  return (
+    <Routes>
+      <Route element={<DashboardLayout />}>
+        <Route path="/demoras/*" element={<DemorasRoutes />} />
+        <Route index path="/inicio/*" element={<InicioRoutes />} />
+        <Route path="/internaciones/*" element={<InternacionesRoutes />} />
+        <Route path="/extensiones/*" element={<ExtensionesRoutes />} />
+      </Route>
+      <Route path="/*" element={<Navigate to={"/inicio"} />} />
+    </Routes>
+  );
 };

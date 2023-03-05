@@ -14,7 +14,7 @@ import React, { useState, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Iconify from "../../components/iconify";
 import { AuthLayout } from "../layout/AuthLayout";
-import { Link as RouterLink } from "react-router-dom";
+import { Link as RouterLink, useNavigate } from "react-router-dom";
 import { useForm } from "../../hooks";
 import {
   checkingAuthentication,
@@ -25,7 +25,7 @@ import {
 export const Login = () => {
   const { status, errorMessage } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
-
+  const navigate = useNavigate();
   const { email, password, onInputChange } = useForm({
     email: "",
     password: "",
@@ -36,14 +36,15 @@ export const Login = () => {
 
   const onSubmit = (event) => {
     event.preventDefault();
-    console.log({ email, password });
     dispatch(startLoginWithEmailPassword({ email, password }));
-    console.log("Entrando onSubmit");
+    const lastPath = localStorage.getItem("lastPath") || "/inicio";
+    navigate(lastPath, { replace: true });
   };
 
   const onGoogleSignIn = () => {
-    console.log("Entrando con google");
     dispatch(startGoogleSignIn());
+    const lastPath = localStorage.getItem("lastPath") || "/inicio";
+    navigate(lastPath, { replace: true });
   };
 
   return (

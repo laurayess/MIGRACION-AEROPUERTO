@@ -1,3 +1,4 @@
+import { useSelector } from "react-redux";
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import { AuthRoutes } from "../auth/routes/AuthRoutes";
 import { DemorasRoutes } from "../demoras/routes/DemorasRoutes";
@@ -12,16 +13,16 @@ import { PublicRoute } from "./PublicRoute";
 export const AppRouter = () => {
   const status = useCheckAuth();
 
-  if ( status === 'checking' ) {
-    return <CheckingAuth />
+  if (status === "checking") {
+    return <CheckingAuth />;
   }
 
   return (
     <Routes>
-      {status === "authenticated" ? (
-        <Route path="/*" element={<InicioRoutes  />}  />
-      ) : (
+      {status === "not-authenticated" ? (
         <Route path="/auth/*" element={<AuthRoutes />} />
+      ) : (
+        <Route path="/*" element={<PrivateRoute />}></Route>
       )}
       <Route path="/*" element={<Navigate to="/auth/login" />} />
 
@@ -38,7 +39,7 @@ export const AppRouter = () => {
 
       {/* INTERNACIONES */}
 
-     {/*  <Route
+      {/*  <Route
         path="/internaciones/*"
         element={<InternacionesRoutes></InternacionesRoutes>}
       ></Route> */}

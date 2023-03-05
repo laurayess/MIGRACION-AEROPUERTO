@@ -1,41 +1,50 @@
 // component
-import SvgColor from '../../../components/svg-color';
+import {
+  AccessTimeFilled,
+  AccessTimeOutlined,
+  ArticleOutlined,
+  ExtensionOutlined,
+  HomeOutlined,
+  TimeToLeave,
+} from "@mui/icons-material";
+import SvgColor from "../../../components/svg-color";
 
 // ----------------------------------------------------------------------
 
-const icon = (name) => <SvgColor src={`/src/assets/icons/navbar/${name}.svg`} sx={{ width: 1, height: 1 }} />;
+const icon = (name) => (
+  <SvgColor
+    src={`/src/assets/icons/navbar/${name}.svg`}
+    sx={{ width: 1, height: 1 }}
+  />
+);
 
 const navConfig = [
   {
-    title: 'dashboard',
-    path: '/incio',
-    icon: icon('ic_analytics'),
+    title: "Inicio",
+    path: "/inicio",
+    icon: <HomeOutlined />,
   },
   {
-    title: 'user',
-    path: '/demoras',
-    icon: icon('ic_user'),
+    title: "Demoras",
+    path: "/demoras/inicio",
+    icon: <AccessTimeOutlined />,
   },
   {
-    title: 'product',
-    path: '/dashboard/products',
-    icon: icon('ic_cart'),
+    title: "Internaciones",
+    path: "/internaciones/inicio",
+    icon: <ArticleOutlined />,
   },
   {
-    title: 'blog',
-    path: '/dashboard/blog',
-    icon: icon('ic_blog'),
+    title: "Extensiones",
+    path: "/extensiones/inicio",
+    icon: <ExtensionOutlined />,
   },
-  {
-    title: 'login',
-    path: '/login',
-    icon: icon('ic_lock'),
-  },
-  {
-    title: 'Not found',
-    path: '/404',
-    icon: icon('ic_disabled'),
-  },
+
+  /* {
+    title: "Not found",
+    path: "/404",
+    icon: icon("ic_disabled"),
+  }, */
 ];
 
 export default navConfig;

@@ -3,7 +3,7 @@ import React from "react";
 import { useLocation } from "react-router";
 import { Navigate } from "react-router-dom";
 
-export const PublicRoute = ({ children }) => {
+export const PublicRoute = () => {
   const logged = false;
   const { pathname, search } = useLocation();
 
