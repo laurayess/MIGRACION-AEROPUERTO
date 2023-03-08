@@ -39,7 +39,7 @@ export const PrivateRoute = () => {
         <Route path="/extensiones/*" element={<ExtensionesRoutes />} />
         <Route path="/bitacoras/*" element={<BitacorasRoutes />}></Route>
       </Route>
-      <Route path="/*" element={<Navigate to={"/inicio"} />} />
+      <Route path="/*" element={<Navigate to={"/bitacoras/inicio"} />} />
     </Routes>
   );
 };

@@ -37,13 +37,13 @@ export const Login = () => {
   const onSubmit = (event) => {
     event.preventDefault();
     dispatch(startLoginWithEmailPassword({ email, password }));
-    const lastPath = localStorage.getItem("lastPath") || "/inicio";
+    const lastPath = localStorage.getItem("lastPath") || "/bitacoras/inicio";
     navigate(lastPath, { replace: true });
   };
 
   const onGoogleSignIn = () => {
     dispatch(startGoogleSignIn());
-    const lastPath = localStorage.getItem("lastPath") || "/inicio";
+    const lastPath = localStorage.getItem("lastPath") || "/bitacoras/inicio";
     navigate(lastPath, { replace: true });
   };
 
