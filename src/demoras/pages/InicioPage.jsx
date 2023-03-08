@@ -29,6 +29,7 @@ import {
   TextField,
   Modal,
   Divider,
+  CircularProgress,
 } from "@mui/material";
 import Label from "../../components/label";
 import Iconify from "../../components/iconify";
@@ -37,6 +38,9 @@ import Scrollbar from "../../components/scrollbar";
 import { UserListHead, UserListToolbar } from "../../sections/user";
 import { Add, SearchOff, SearchOutlined } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { startLoadingIterinarioBuId } from "../../store/slices/iterinarios/thunks";
+import { useForm } from "../../hooks";
 
 const TABLE_HEAD = [
   { id: "name", label: "Name", alignRight: false },
@@ -114,7 +118,18 @@ const buttonStyleWhite = {
   },
 };
 
+const formData = {
+  novuelo: "",
+};
+
 export const InicioPage = () => {
+  const dispatch = useDispatch();
+  const { isLoadingIterinarioById, iterinarioById } = useSelector(
+    (state) => state.iterinario
+  );
+
+  const { novuelo, onInputChange } = useForm(formData);
+
   const [open, setOpen] = useState(null);
 
   const [page, setPage] = useState(0);
@@ -203,6 +218,15 @@ export const InicioPage = () => {
     navigate(path);
   };
   const pattern = "^[0-9]+$";
+
+  const handleSearch = (event) => {
+    setSearch(!search);
+    event.preventDefault();
+    console.log({ novuelo });
+    dispatch(startLoadingIterinarioBuId(novuelo));
+    console.log("entrando");
+  };
+  //startLoadingIterinarioBuId
   return (
     <>
       <Helmet>
@@ -235,6 +259,7 @@ export const InicioPage = () => {
             </Typography>
             <Typography color={"#FFF"}>Escriba el numero de vuelo</Typography>
           </Box>
+
           <Box
             width={"70%"}
             alignItems={"center"}
@@ -243,8 +268,10 @@ export const InicioPage = () => {
             justifyContent={"space-evenly"}
           >
             <TextField
-              name="noVuelo"
-              placeholder="noVuelo"
+              name="novuelo"
+              placeholder="novuelo"
+              value={novuelo}
+              onChange={onInputChange}
               label="No. Vuelo"
               color="text"
               InputProps={{
@@ -256,7 +283,7 @@ export const InicioPage = () => {
             <Button
               size="large"
               sx={{ backgroundColor: "rgb(105 92 254)" }}
-              onClick={() => setSearch(!search)}
+              onClick={(event) => handleSearch(event)}
             >
               <SearchOutlined sx={{ color: "#FFF" }} />
             </Button>
@@ -284,16 +311,24 @@ export const InicioPage = () => {
                 borderStyle: "solid",
               }}
             >
-              {search ? (
+              {isLoadingIterinarioById === true ? (
+                <CircularProgress size={30} />
+              ) : iterinarioById ? (
                 <>
                   <Typography align="center">
-                    CONSECIONARIA VUELA COMPAÑÍA
+                    {iterinarioById.aerolinea}
                   </Typography>
-                  <Typography align="center">HORA ENTRADA: 08:03</Typography>
-                  <Typography align="center">HORA SALIDA: 08:38</Typography>
+                  <Typography align="center">
+                    HORA ENTRADA: {iterinarioById.timeLLeg}
+                  </Typography>
+                  <Typography align="center">
+                    HORA SALIDA: {iterinarioById.timeSal}
+                  </Typography>
                 </>
               ) : (
-                <Typography color={"#000"}>Sin Itinerario</Typography>
+                <>
+                  <Typography color={"#000"}>Sin Itinerario</Typography>
+                </>
               )}
             </Box>
             <Typography color={"#FFF"}>
@@ -345,10 +380,16 @@ export const InicioPage = () => {
               variant="filled"
               type="number"
               sx={{ width: "30%" }}
-              disabled={!search}
+              disabled={!iterinarioById}
+              InputLabelProps={{
+                shrink: true,
+              }}
               inputProps={{
-                max: 100,
-                min: 10,
+                min: "1",
+                max: "24",
+                step: "1",
+                maxLength: "2",
+                pattern: "^[0-9]+$",
               }}
               InputProps={{
                 style: {
@@ -362,7 +403,7 @@ export const InicioPage = () => {
               label="No. Vuelo"
               color="text"
               sx={{ width: "30%" }}
-              disabled={!search}
+              disabled={!iterinarioById}
               InputProps={{
                 style: {
                   backgroundColor: "#F0F0F0",
@@ -384,7 +425,7 @@ export const InicioPage = () => {
               color="text"
               variant="filled"
               sx={{ width: "30%" }}
-              disabled={!search}
+              disabled={!iterinarioById}
               InputProps={{
                 style: {
                   backgroundColor: "#F0F0F0",
@@ -397,7 +438,7 @@ export const InicioPage = () => {
               label="No. Vuelo"
               color="text"
               sx={{ width: "30%" }}
-              disabled={!search}
+              disabled={!iterinarioById}
               InputProps={{
                 style: {
                   backgroundColor: "#F0F0F0",
@@ -412,7 +453,7 @@ export const InicioPage = () => {
             display={"flex"}
             justifyContent={"space-around"}
           >
-            <Button disabled={!search} variant="contained" size="large">
+            <Button disabled={!iterinarioById} variant="contained" size="large">
               CALCULAR
             </Button>
           </Box>

@@ -5,6 +5,8 @@ export const iterinariosSlice = createSlice({
   initialState: {
     isLoadingIterinario: false,
     iterinarios: false,
+    isLoadingIterinarioById: false,
+    iterinarioById: false,
     errorMessage: "",
   },
   reducers: {
@@ -12,8 +14,15 @@ export const iterinariosSlice = createSlice({
       state.isLoadingIterinario = true;
     },
     setIterinarios: (state, action) => {
-      state.isLoadingIterinario = true;
+      state.isLoadingIterinario = false;
       state.iterinarios = action.payload.iterinarios;
+    },
+    startLoadingIterinarioById: (state) => {
+      state.isLoadingIterinarioById = true;
+    },
+    setIterinarioById: (state, action) => {
+      state.isLoadingIterinarioById = false;
+      state.iterinarioById = action.payload.iterinarioById;
     },
 
     increment: (state) => {
@@ -28,6 +37,8 @@ export const iterinariosSlice = createSlice({
 export const {
   startLoadingIterinario,
   setIterinarios,
+  startLoadingIterinarioById,
+  setIterinarioById,
   increment,
   incrementByAmount,
 } = iterinariosSlice.actions;

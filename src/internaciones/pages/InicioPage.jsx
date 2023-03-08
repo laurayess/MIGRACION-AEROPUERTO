@@ -2,10 +2,19 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   Box,
   Button,
+  CircularProgress,
   Divider,
   List,
   MenuItem,
   Modal,
+  Paper,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TablePagination,
+  TableRow,
   TextField,
   Typography,
 } from "@mui/material";
@@ -51,6 +60,17 @@ const styleModal = {
   backgroundColor: "common.white",
 };
 
+/* Data del JR */
+const data = [
+  { id: 1, name: "John Doe", email: "johndoe@example.com", age: 35 },
+  { id: 2, name: "Jane Doe", email: "janedoe@example.com", age: 30 },
+  { id: 3, name: "Bob Smith", email: "bobsmith@example.com", age: 25 },
+  { id: 4, name: "Alice Johnson", email: "alicejohnson@example.com", age: 40 },
+  { id: 5, name: "Tom Brown", email: "tombrown@example.com", age: 45 },
+];
+
+/*  */
+
 export const InicioPage = () => {
   const dispatch = useDispatch();
   const { isLoadingIterinario, iterinarios } = useSelector(
@@ -66,11 +86,31 @@ export const InicioPage = () => {
   const handleOpenIte = () => setOpenAddIte(true);
   const handleCloseIte = () => setOpenAddIte(false);
 
+  /* Probando Tabla de JR */
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(20);
+  const [searchTerm, setSearchTerm] = useState("");
+
+  /* const handleChangePage = (event, newPage) => {
+    setPage(newPage);
+  };
+
+  const handleChangeRowsPerPage = (event) => {
+    setRowsPerPage(+event.target.value);
+    setPage(0);
+  }; */
+
+  /* const filteredData = data.filter(
+    (row) =>
+      row.novuelo.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      row.aerolinea.toLowerCase().includes(searchTerm.toLowerCase())
+  ); */
+  /*  */
+
   useEffect(() => {
     dispatch(startLoadingIterinarios());
   }, []);
 
-  console.log(iterinarios);
   return (
     <>
       <Box
@@ -107,15 +147,95 @@ export const InicioPage = () => {
             Agregar Iterinario
           </Button>
         </Box>
-        <Box width={"100%"} height={"auto"} sx={{ backgroundColor: "#505050" }}>
-          {iterinarios?.length > 0 ? (
-            iterinarios?.map((iti) => (
-              <Typography key={iti.id}>{JSON.stringify(iti)}</Typography>
+        {/*  <Box
+          width={"100%"}
+          alignItems="center"
+          alignContent={"center"}
+          height={"auto"}
+          display="flex"
+          justifyContent={"center"}
+          flexDirection="column"
+          sx={{ backgroundColor: "#505050" }}
+        >
+          {isLoadingIterinario ? (
+            <CircularProgress size={60} />
+          ) : iterinarios.length > 0 ? (
+            iterinarios.map((iti) => (
+              <Typography padding={3} align="center" key={iti.id}>
+                {JSON.stringify(iti)}
+              </Typography>
             ))
           ) : (
             <Typography>No se encontró información</Typography>
           )}
+        </Box> */}
+
+        {/* Tabla del JR */}
+        <Box>
+          <Box marginBottom={2}>
+            <TextField
+              label="Search"
+              variant="outlined"
+              fullWidth
+              value={searchTerm}
+              onChange={(event) => setSearchTerm(event.target.value)}
+            />
+          </Box>
+          <TableContainer
+            component={Paper}
+            sx={{ marginBottom: 2, maxHeight: "400px", overflow: "auto" }}
+          >
+            <Table
+              
+            >
+              {isLoadingIterinario ? (
+                <CircularProgress size={60} />
+              ) : iterinarios.length > 0 ? (
+                <>
+                  <TableHead>
+                    <TableRow>
+                      <TableCell>Aerolinea</TableCell>
+                      <TableCell>No.Vuelo</TableCell>
+                      <TableCell>Hr.Llegada </TableCell>
+                      <TableCell>Hr.Salida</TableCell>
+                      <TableCell>Origen</TableCell>
+                      <TableCell>Destino</TableCell>
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    {iterinarios
+                      .slice(
+                        page * rowsPerPage,
+                        page * rowsPerPage + rowsPerPage
+                      )
+                      .map((row) => (
+                        <TableRow key={row.id}>
+                          <TableCell>{row.aerolinea}</TableCell>
+                          <TableCell>{row.novuelo}</TableCell>
+                          <TableCell>{row.timeLLeg}</TableCell>
+                          <TableCell>{row.timeSal}</TableCell>
+                          <TableCell>{row.origen}</TableCell>
+                          <TableCell>{row.destino}</TableCell>
+                        </TableRow>
+                      ))}
+                  </TableBody>
+                </>
+              ) : (
+                <Typography>No se encontró información</Typography>
+              )}
+            </Table>
+          </TableContainer>
+          {/*  <TablePagination
+            rowsPerPageOptions={[5, 10, 25]}
+            component="div"
+            count={iterinarios.length}
+            rowsPerPage={rowsPerPage}
+            page={page}
+            onChangePage={handleChangePage}
+             onChangeRowsPerPage={handleChangeRowsPerPage}
+          /> */}
         </Box>
+        {/* Fin del JR */}
       </Box>
       {/* Modal Agregar Aerolinea */}
       <Modal
