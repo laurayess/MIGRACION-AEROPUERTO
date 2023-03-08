@@ -11,7 +11,8 @@ import {
 } from "@mui/material";
 import Logo from "../../components/logo";
 import Iconify from "../../components/iconify";
-import useResponsive from '../../hooks/useResponsive';
+import useResponsive from "../../hooks/useResponsive";
+
 const StyledRoot = styled("div")(({ theme }) => ({
   [theme.breakpoints.up("md")]: {
     display: "flex",
@@ -59,10 +60,7 @@ export const AuthLayout = ({ children, title = "" }) => {
             <Typography variant="h3" sx={{ px: 5, mt: 10, mb: 5 }}>
               Hola, Bienvenido de nuevo
             </Typography>
-            <img
-              src={"/src/assets/illustrations/illustration_login.png"}
-              alt="login"
-            />
+            <img src={"./illustrations/illustration_login.png"} alt="login" />
           </StyledSection>
         )}
 

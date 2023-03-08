@@ -11,6 +11,7 @@ export default defineConfig({
       "**/*.html",
       "**/*.png",
       "**/*.svg",
+      "**/*.jpg",
       "sw.js",
     ],
     // ...otras opciones de configuración
