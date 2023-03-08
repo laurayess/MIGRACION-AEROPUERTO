@@ -5,15 +5,19 @@ import "./styles.css";
 import { BrowserRouter, HashRouter } from "react-router-dom";
 import { Provider } from "react-redux";
 import { store } from "./store/store";
+import { HelmetProvider } from "react-helmet-async";
+import ThemeProvider from "./theme";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
-    <HashRouter>
-      <Provider store={store}>
-        {/* <BrowserRouter> */}
-        <App />
-        {/* </BrowserRouter> */}
-      </Provider>
-    </HashRouter>
+    <HelmetProvider>
+      <ThemeProvider>
+        <Provider store={store}>
+          <HashRouter>
+            <App />
+          </HashRouter>
+        </Provider>
+      </ThemeProvider>
+    </HelmetProvider>
   </React.StrictMode>
 );

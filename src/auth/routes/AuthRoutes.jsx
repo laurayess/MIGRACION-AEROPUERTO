@@ -6,13 +6,12 @@ import { Registro } from "../pages/Registro";
 
 export const AuthRoutes = () => {
   return (
-    <PublicRoute>
-      <Routes>
-        <Route path="login" element={<Login />} />
-        <Route path="registro" element={<Registro />} />
-
-        {/* <Route path="/*" element={<Navigate to="/auth/login" />} /> */}
-      </Routes>
-    </PublicRoute>
+    //<PublicRoute>
+    <Routes>
+      <Route path="login" element={<Login />} />
+      <Route path="registro" element={<Registro />} />
+      <Route path="/*" element={<Navigate to="/auth/login" />} />
+    </Routes>
+    //</PublicRoute>
   );
 };

@@ -6,14 +6,12 @@ import { InicioBitacora } from "../pages/InicioBitacora";
 
 export const BitacorasRoutes = () => {
   return (
-    <PrivateRoute>
-      <Routes>
-        <Route path="/inicio" element={<InicioBitacora />} />
+    <Routes>
+      <Route path="inicio" element={<InicioBitacora />} />
 
-        <Route path="/calculator" element={<CalculatorBitacora />} />
+      <Route path="calculator" element={<CalculatorBitacora />} />
 
-        <Route path="/*" element={<Navigate to="/bitacoras/inicio" />} />
-      </Routes>
-    </PrivateRoute>
+      <Route path="/*" element={<Navigate to="/bitacoras/inicio" />} />
+    </Routes>
   );
 };

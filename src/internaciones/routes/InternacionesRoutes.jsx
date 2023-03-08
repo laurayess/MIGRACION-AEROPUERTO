@@ -5,12 +5,12 @@ import { InicioPage } from "../pages/InicioPage";
 
 export const InternacionesRoutes = () => {
   return (
-    <PrivateRoute>
+    //<PrivateRoute>
       <Routes>
         <Route path="inicio" element={<InicioPage />} />
 
         <Route path="/*" element={<Navigate to="/internaciones/inicio" />} />
       </Routes>
-    </PrivateRoute>
+    //</PrivateRoute>
   );
 };

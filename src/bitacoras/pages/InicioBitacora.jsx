@@ -109,6 +109,7 @@ export const InicioBitacora = () => {
   };
 
   useEffect(() => {
+    console.log("entreee a bitacoras");
     dispatch(reset());
   }, []);
   return (
