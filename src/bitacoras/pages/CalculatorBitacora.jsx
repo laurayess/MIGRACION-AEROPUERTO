@@ -15,14 +15,21 @@ import {
 } from "@mui/material";
 
 import "../../../src/styles.css";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useBitacoras } from "../hooks/useBitacoras";
 import { decimalToHora, sumarHoras } from "../helpers/CalculatorTime";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import RemoveIcon from "@mui/icons-material/Remove";
+import { useParams } from "react-router-dom";
+import { getBitacoraById } from "../../store/slices/bitacoras/bitacorasThunks";
+import { useEffect } from "react";
+import { editBitacoraProvider } from "../../firebase/provider";
 
 export function CalculatorBitacora() {
   const { seleccionados, matricula, folio } = useBitacoras();
+  const { id } = useParams();
+  const dispatch = useDispatch();
+
   const [formato, setFormato] = React.useState("Decimal");
   const [total, setTotal] = React.useState(true);
   const [turm, setTurm] = React.useState(false);
@@ -36,6 +43,9 @@ export function CalculatorBitacora() {
   const [to, setTo] = React.useState([]);
   const [selected, setSelected] = React.useState([]);
   const [selectedModel, setSelectedModel] = React.useState([]);
+  const [folioN, setFolioN] = React.useState(parseInt(folio));
+  const [matriculaN, setMatriculaN] = React.useState(matricula);
+  const [bitacora, setBitacora] = React.useState(null);
 
   const handleChangeFormato = (event) => {
     setFormato(event.target.value);
@@ -65,8 +75,6 @@ export function CalculatorBitacora() {
       });
       if (!esta) return t;
     });
-    // console.log(newCantidades);
-    // console.log(newTo);
     setCantidades(newCantidades);
     setTo(newTo);
     const initRow = iniacializarRows(seleccionados2);
@@ -101,6 +109,17 @@ export function CalculatorBitacora() {
     return "";
   };
 
+  const getBitacoraSelected = async (id) => {
+    const data = await dispatch(getBitacoraById(id));
+    const { matricula, folio, cantidades, to, seleccionados } = data;
+    setMatriculaN(matricula);
+    setFolioN(folio);
+    setCantidades(cantidades);
+    setTo(to);
+    setSeleccionados2(seleccionados);
+    setBitacora(data);
+  };
+
   const createColumns = (componentes) => {
     let ncolumns = [];
     ncolumns.push({
@@ -111,11 +130,11 @@ export function CalculatorBitacora() {
       editable: true,
     });
     ncolumns.push({
-      field: "to",
-      headerName: "SUMAR",
+      field: "folio",
+      headerName: "FOLIO",
       headerClassName: "info",
       with: 50,
-      editable: true,
+      editable: false,
     });
     componentes.map((comp) => {
       ncolumns.push({
@@ -138,10 +157,8 @@ export function CalculatorBitacora() {
   };
 
   const onFilaSelected = (ids) => {
-    // console.log(ids);
     const selectedIDs = new Set(ids);
     const selectedRowData = rows.filter((row) => {
-      // console.log(row);
       return selectedIDs.has(row.id);
     });
     setSelected(selectedRowData);
@@ -149,7 +166,12 @@ export function CalculatorBitacora() {
   };
 
   const iniacializarRows = (iniciales) => {
-    let init = { id: 0, cantidades: "0:0", to: "total,turm" };
+    let init = {
+      id: 0,
+      cantidades: "0:0",
+      to: "total,turm",
+      folio: parseInt(folioN, 10),
+    };
     iniciales.map((comp, index) => {
       init[comp.name + "total"] = comp.total;
       init[comp.name + "turm"] = comp.turm;
@@ -167,6 +189,7 @@ export function CalculatorBitacora() {
       iniciales.map((comp, index) => {
         let totaln = anterior[comp.name + "total"];
         let turmn = anterior[comp.name + "turm"];
+        let fol = parseInt(anterior.folio, 10) + 1;
 
         if (sumarA.includes("total")) {
           totaln = sumarHoras(totaln, can);
@@ -177,24 +200,39 @@ export function CalculatorBitacora() {
 
         row[comp.name + "total"] = totaln;
         row[comp.name + "turm"] = turmn;
+        row.folio = fol;
       });
       newRows = [row, ...newRows];
     });
-
     setRows(newRows);
+    return newRows;
   };
 
-  React.useEffect(() => {
+  useEffect(() => {
     const newColumns = createColumns(seleccionados);
     const initRow = iniacializarRows(seleccionados);
     setRows(initRow);
     setColumns(newColumns);
-    // calcularRows(initRow, seleccionados2, cantidades);
+
+    if (id !== undefined) {
+      getBitacoraSelected(id);
+    }
   }, []);
 
-  const onSumar = () => {
+  useEffect(() => {
+    const newColumns = createColumns(seleccionados2);
+    const initRow = iniacializarRows(seleccionados2);
+    const newRows = calcularRows(initRow, seleccionados2, cantidades, to);
+
+    setRows([...newRows]);
+
+    setColumns(newColumns);
+  }, [bitacora]);
+
+  const onSumar = async () => {
     let cantidadSum = "0:0";
     let toString = "";
+    setFolioN(folioN + 1);
     if (total) {
       toString += "total,";
     }
@@ -211,9 +249,11 @@ export function CalculatorBitacora() {
           (hora < 10 ? "0" + hora : hora) + ":" + (min < 10 ? "0" + min : min);
     }
 
-    setCantidades([...cantidades, cantidadSum]);
-
-    setTo([...to, toString]);
+    const cant = [...cantidades, cantidadSum];
+    const too = [...to, toString];
+    setCantidades(cant);
+    setTo(too);
+    await editBitacoraProvider(id, { cantidades: cant, to: too });
 
     const newCant = [...cantidades, cantidadSum];
     const newTo = [...to, toString];
@@ -222,17 +262,15 @@ export function CalculatorBitacora() {
 
     calcularRows(initRow, seleccionados2, newCant, newTo);
   };
+
   return (
-    <Box sx={{ height: 350, width: "100%" }}>
+    <Box sx={{ height: "auto", width: "100%" }}>
       <Typography
         textAlign={"center"}
         variant="h5"
-        sx={{ fontWeight: "bold", mb: 0, mt: 3 }}
+        sx={{ fontWeight: "bold", mb: 0, mt: 0 }}
       >
-        {matricula}
-      </Typography>
-      <Typography textAlign={"center"} sx={{ mb: 3, mt: 1 }}>
-        {folio}
+        {matriculaN}
       </Typography>
 
       <Box justifyContent={"space-around"} sx={{ mb: 0 }} display={"flex"}>

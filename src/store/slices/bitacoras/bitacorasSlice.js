@@ -3,6 +3,8 @@ import { createSlice } from "@reduxjs/toolkit";
 export const bitacoraSlice = createSlice({
   name: "bitacora",
   initialState: {
+    bitacoras: [],
+    isLoadingBitacoras: false,
     matricula: "",
     folio: "",
     planeador: { name: "planeador", selected: false, total: "", turm: "" },
@@ -74,6 +76,14 @@ export const bitacoraSlice = createSlice({
     setFolio: (state, action) => {
       state.folio = action.payload.folio;
     },
+    setBitaoras: (state, action) => {
+      state.bitacoras = action.payload.bitacoras;
+      state.isLoadingBitacoras = false;
+    },
+
+    startLoadingBitacoras: (state) => {
+      state.isLoadingBitacoras = true;
+    },
 
     setPlaneador: (state, action) => {
       state.planeador = { ...state.planeador, ...action.payload.planeador };
@@ -131,4 +141,6 @@ export const {
   setMatricula,
   setFolio,
   reset,
+  setBitaoras,
+  startLoadingBitacoras,
 } = bitacoraSlice.actions;

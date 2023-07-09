@@ -46,7 +46,7 @@ export default function Componente({
       sx={{
         boxShadow: 4,
         borderRadius: "10px",
-        pb: 1,
+        pb: 2,
         pl: 2,
         pr: 2,
         background: checked ? "#199EA6" : "#090D37",
@@ -91,10 +91,10 @@ export default function Componente({
         value={turm}
         onChange={handleChangeTURM}
       />
-      <Typography sx={{ mt: 3 }}>Formatos aceptados:</Typography>
+      {/* <Typography sx={{ mt: 3 }}>Formatos aceptados:</Typography>
       <Typography sx={{ fontSize: "13px", mt: 1, fontWeight: "bold" }}>
         Decimal:"10.5" o Hora:"10:30"
-      </Typography>
+      </Typography> */}
     </Box>
   );
 }

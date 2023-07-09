@@ -36,7 +36,19 @@ export const useBitacoras = () => {
       const comp = seleccionados.find((co) => componente.name === co.name);
       if (componente.selected && !comp) seleccionados.push(componente);
     });
-  }, []);
+  }, [
+    planeador,
+    motor1,
+    motor2,
+    helice1,
+    helice2,
+    rotorPrincipal,
+    rotorCola,
+    pala1,
+    pala2,
+    pala3,
+    pala4,
+  ]);
 
   return { seleccionados, matricula, folio };
 };
